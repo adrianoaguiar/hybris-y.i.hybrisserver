@@ -1,0 +1,65 @@
+
+<Server port="-1" shutdown="SHUTDOWN">
+
+  <Listener className="org.apache.catalina.core.JasperListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.mbeans.JmxRemoteLifecycleListener"
+            rmiRegistryPortPlatform="${TC_JMX_PORT}"
+            rmiServerPortPlatform="${TC_JMX_SERVER_PORT}" />
+
+  <Service name="Catalina" >
+
+    <Executor name="hybrisExecutor"
+	      namePrefix="hybrisHTTP"
+	      maxThreads="200"
+	      minSpareThreads="40"
+	      maxIdleTime="10000"/>
+
+    <Connector port="${TC_HTTP_PORT}"
+               redirectPort="${TC_HTTP_REDIRECT_PORT}"
+               maxHttpHeaderSize="8192"
+               maxThreads="200"
+               protocol="org.apache.coyote.http11.Http11Protocol"
+               executor="hybrisExecutor"
+               enableLookups="false"
+               acceptCount="100"
+               connectionTimeout="20000"
+               URIEncoding="UTF-8"
+               disableUploadTimeout="true" />
+
+    <Connector port="${TC_HTTPS_PORT}"
+               maxHttpHeaderSize="8192"
+               maxThreads="150"
+               protocol="org.apache.coyote.http11.Http11Protocol"
+               executor="hybrisExecutor"
+               enableLookups="false"
+               acceptCount="100"
+               connectionTimeout="20000"
+               disableUploadTimeout="true"
+               URIEncoding="UTF-8"
+               clientAuth="false"
+               scheme="https"
+               secure="true"
+               SSLEnabled="true"
+               sslProtocol="TLS"
+               keystoreFile="${catalina.home}/lib/keystore"
+               keystorePass="123456" />
+
+    <Connector  protocol="AJP/1.3"  URIEncoding="UTF-8"  port="${TC_AJP_PORT}" />
+
+    <Engine name="Catalina" defaultHost="localhost">
+
+      <Valve 	className="org.apache.catalina.valves.AccessLogValve"
+             	directory="/opt/tomcat/log"
+	      	prefix="access."
+        	suffix=".log"
+	      	pattern="combined"/>
+
+      <Host 	name="localhost"
+      		appBase="webapps"
+		unpackWARs="false"
+		autoDeploy="false"/>
+
+    </Engine>
+  </Service>
+</Server>
