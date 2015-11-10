@@ -10,4 +10,4 @@
   * changes server.xml
   * adds startHybrisTomcat.sh
 
-  build as: make build
+  build as: make
